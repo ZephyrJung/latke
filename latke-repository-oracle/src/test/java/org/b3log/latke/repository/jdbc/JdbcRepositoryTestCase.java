@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2018, b3log.org & hacpai.com
+ * Copyright (c) 2009-2019, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import static org.testng.AssertJUnit.*;
  * JdbcRepositoryTestCase, now using Oracle 11g for test.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Mar 15, 2018
+ * @version 2.0.0.1, Jan 15, 2019
  * @since 2.3.18
  */
 public class JdbcRepositoryTestCase {
@@ -58,7 +58,7 @@ public class JdbcRepositoryTestCase {
     private boolean ifRun = true;
 
     static {
-        Latkes.initRuntimeEnv();
+        Latkes.init();
     }
 
     /**
@@ -101,7 +101,7 @@ public class JdbcRepositoryTestCase {
             JdbcUtil.executeSql(createTableSql.toString(), connection, false);
             connection.commit();
             connection.close();
-            Latkes.initRuntimeEnv();
+            Latkes.init();
 
         } catch (final Exception e) {
             e.printStackTrace();
@@ -343,8 +343,7 @@ public class JdbcRepositoryTestCase {
 
         final Query query = new Query();
         query.setFilter(new PropertyFilter("col1", FilterOperator.EQUAL, new Integer("100")));
-        query.addProjection("col1", String.class);
-        query.addProjection("col2", String.class);
+        query.select("col1", "col2");
         query.addSort("oId", SortDirection.ASCENDING);
         query.setPageSize(new Integer("4"));
         query.setCurrentPageNum(2);

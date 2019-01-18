@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2018, b3log.org & hacpai.com
+ * Copyright (c) 2009-2019, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class JdbcRepositoriesTestCase {
      */
     @Test
     public void jsonToModel() {
-        Latkes.initRuntimeEnv();
+        Latkes.init();
         final List<RepositoryDefinition> repositoryDefinitions = JdbcRepositories.getRepositoryDefinitions();
 
         assertNotNull(repositoryDefinitions);
@@ -48,7 +48,7 @@ public class JdbcRepositoriesTestCase {
      */
     @Test(groups = {"jdbc"})
     public void jsonToDB() {
-        Latkes.initRuntimeEnv();
+        Latkes.init();
 //        JdbcRepositories.initAllTables();
     }
 }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Latke parent POM.
-    Version: 1.2.2.22, Sep 25, 2018
+    Version: 1.2.2.24, Jan 2, 2019
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.b3log</groupId>
     <artifactId>latke-parent</artifactId>
-    <version>2.4.19-SNAPSHOT</version>
+    <version>2.4.43-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Latke Parent</name>
     <url>https://github.com/b3log/latke</url>
-    <description>一个类似 Spring 但以 JSON 为主的 Java Web 框架。</description>
+    <description>一款以 JSON 为主的 Java Web 框架。</description>
     <inceptionYear>2009</inceptionYear>
 
     <parent>
@@ -22,7 +22,7 @@
     </parent>
 
     <modules>
-        <module>latke</module>
+        <module>latke-core</module>
         <module>latke-repository-h2</module>
         <module>latke-repository-mysql</module>
         <module>latke-repository-sqlserver</module>
@@ -45,26 +45,24 @@
         <servlet.version>3.1.0</servlet.version>
         <el-api.version>1.0</el-api.version>
         <freemarker.version>2.3.28</freemarker.version>
-        <javax.mail.version>1.4.7</javax.mail.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
         <commons-codec.version>1.11</commons-codec.version>
         <javassist.version>3.23.1-GA</javassist.version>
         <slf4j.version>1.7.25</slf4j.version>
 
-        <!-- Maven Plugin -->
-        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
-        <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
-        <!-- Unit Test -->
-        <testng.version>6.1.1</testng.version>
-        <!-- JDBC Drivers -->
         <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
-        <!-- JDBC Connection Pool -->
         <h2.version>1.4.197</h2.version>
         <hikaricp.version>3.2.0</hikaricp.version>
-        <!-- Redis -->
         <jedis.version>2.9.0</jedis.version>
 
+        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+        <testng.version>6.1.1</testng.version>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <JDK.version>1.8</JDK.version>
     </properties>
@@ -83,31 +81,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>${JDK.version}</source>
-                    <target>${JDK.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
@@ -140,7 +113,7 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2009-2018</year>
+                        <year>2009-2019</year>
                         <devTeam>b3log.org &amp; hacpai.com</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
@@ -158,18 +131,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <skipTests>false</skipTests>
                     <parallel>methods</parallel>
                     <threadCount>20</threadCount>
+                    <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -180,31 +154,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <show>private</show>
-                    <failOnError>false</failOnError>
-                    <excludePackageNames>org.json.*,org.weborganic.*</excludePackageNames>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>${maven-cobertura-plugin.version}</version>
             </plugin>
 
         </plugins>
